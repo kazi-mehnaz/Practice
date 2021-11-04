@@ -11,6 +11,10 @@ class Category extends Model
     use HasFactory;
     use SoftDeletes;
 
+    public function parent(){
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
     protected $fillable = [
         'category_name',
         'category_photo',

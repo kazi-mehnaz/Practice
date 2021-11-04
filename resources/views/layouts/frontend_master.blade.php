@@ -97,16 +97,7 @@
                             <ul class="d-flex">
                                 <li class="@yield('home')"><a href="{{ url('/') }}">Home</a></li>
                                 <li class="@yield('about')"><a href="{{ url('/about') }}">About</a></li>
-                                <li>
-                                    <a href="javascript:void(0);">Shop <i class="fa fa-angle-down"></i></a>
-                                    <ul class="dropdown_style">
-                                        <li><a href="shop.html">Shop Page</a></li>
-                                        <li><a href="single-product.html">Product Details</a></li>
-                                        <li><a href="cart.html">Shopping cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                    </ul>
-                                </li>
+                                <li class="@yield('shop')"><a href="{{ url('/shop') }}">Shop</a></li>
                                 <li>
                                     <a href="javascript:void(0);">Pages <i class="fa fa-angle-down"></i></a>
                                     <ul class="dropdown_style">
@@ -164,44 +155,32 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="javascript:void(0);"><i class="flaticon-shop"></i> <span>3</span></a>
+                                <a href="javascript:void(0);"><i class="flaticon-shop"></i> <span>
+                                    {{App\Models\Cart::where('ip_address', request()->ip())->count()}}
+                                </span></a>
                                 <ul class="cart-wrap dropdown_style">
-                                    <li class="cart-items">
-                                        <div class="cart-img">
-                                            <img src="assets/images/cart/1.jpg" alt="">
-                                        </div>
-                                        <div class="cart-content">
-                                            <a href="cart.html">Pure Nature Product</a>
-                                            <span>QTY : 1</span>
-                                            <p>$35.00</p>
-                                            <i class="fa fa-times"></i>
-                                        </div>
-                                    </li>
-                                    <li class="cart-items">
-                                        <div class="cart-img">
-                                            <img src="assets/images/cart/3.jpg" alt="">
-                                        </div>
-                                        <div class="cart-content">
-                                            <a href="cart.html">Pure Nature Product</a>
-                                            <span>QTY : 1</span>
-                                            <p>$35.00</p>
-                                            <i class="fa fa-times"></i>
-                                        </div>
-                                    </li>
-                                    <li class="cart-items">
-                                        <div class="cart-img">
-                                            <img src="assets/images/cart/2.jpg" alt="">
-                                        </div>
-                                        <div class="cart-content">
-                                            <a href="cart.html">Pure Nature Product</a>
-                                            <span>QTY : 1</span>
-                                            <p>$35.00</p>
-                                            <i class="fa fa-times"></i>
-                                        </div>
-                                    </li>
-                                    <li>Subtotol: <span class="pull-right">$70.00</span></li>
+                                    @php
+                                        $sub_total = 0;
+                                    @endphp
+                                    @foreach(App\Models\Cart::where('ip_address', request()->ip())->get() as $cart)
+                                        <li class="cart-items">
+                                            <div class="cart-img">
+                                                <img src="assets/images/cart/1.jpg" alt="">
+                                            </div>
+                                            <div class="cart-content">
+                                                <a href="cart.html">{{App\Models\Product::find($cart->product_id)->product_name}}</a>
+                                                <span>QTY : {{ $cart->quantity }}</span>
+                                                <p>${{App\Models\Product::find($cart->product_id)->product_price * $cart->quantity}}</p>
+                                                @php
+                                                    $sub_total = $sub_total + (App\Models\Product::find($cart->product_id)->product_price * $cart->quantity);
+                                                @endphp
+                                                <a href="{{ url('cart/delete') }}/{{ $cart->id }}"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                    <li>Subtotal: <span class="pull-right">${{$sub_total}}</span></li>
                                     <li>
-                                        <button>Check Out</button>
+                                        <a href="{{ url('cart') }}" class="btn btn-danger">Check Out</a>
                                     </li>
                                 </ul>
                             </li>

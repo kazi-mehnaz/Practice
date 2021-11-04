@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Product;
 use Auth;
 use Carbon\Carbon;
 use Image;
@@ -16,11 +17,12 @@ class CategoryController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     function addcategory(){
-        $categories = Category::latest()->get();
+        $categories = Category::all();
+        $pcategories = Category::whereNull('category_id')->get();
         $deleted_categories = Category::onlyTrashed()->get();
-        return view('admin.category.index', compact('categories', 'deleted_categories'));
+        return view('admin.category.index', compact('categories', 'pcategories', 'deleted_categories'));
     }
 
     function addcategorypost(Request $req){
@@ -33,21 +35,23 @@ class CategoryController extends Controller
             'category_name.unique' => 'Category already taken'
         ]);
 
-        // if($this->category_id){
-        //     $scategory = new Subcategory();
-        //     $scategory->name = $this->name;
-        //     $scategory->slug = $this->slug;
-        //     $scategory->category_id = $this->category_id;
-        //     $scategory->save();
-
-        // }
-
         $category_id = Category::insertGetId([
             'category_name' => $req->category_name,
+            'category_id' => $req->category_id,
             'user_id' => Auth::user()->id,
             'category_photo' => $req->category_photo,
             'created_at' => Carbon::now()
         ]);
+
+        // $data = array(
+        //     'category_name' => $req->category_name,
+        //     'category_id' => $req->category_id,
+        //     'user_id' => Auth::user()->id,
+        //     'category_photo' => $req->category_photo,
+        //     'created_at' => Carbon::now()
+        // );
+
+        // $create = Category::create($data);
 
         $uploaded_photo = $req->file('category_photo');
         $new_name = $category_id.".".$uploaded_photo->getClientOriginalExtension();

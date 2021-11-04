@@ -60,21 +60,32 @@
             <span class="menu-item-label">Home</span>
           </div><!-- menu-item -->
         </a><!-- sl-menu-link -->
-        <a href="" class="sl-menu-link @yield('category')">
+        <a href="{{ url('add/category') }}" class="sl-menu-link @yield('category')">
           <div class="sl-menu-item">
             <i class="menu-item-icon icon ion-ios-photos-outline tx-20"></i>
             <span class="menu-item-label">Category</span>
-            <i class="menu-item-arrow fa fa-angle-down"></i>
           </div><!-- menu-item -->
         </a><!-- sl-menu-link -->
-        <ul class="sl-menu-sub nav flex-column">
+        <!-- <ul class="sl-menu-sub nav flex-column">
           <li class="nav-item"><a href="{{ url('add/category') }}" class="nav-link">Category</a></li>
           <li class="nav-item"><a href="{{ url('add/subcategory') }}" class="nav-link">Sub Category</a></li>
-        </ul>
+        </ul>  -->
         <a href="{{ url('add/product') }}" class="sl-menu-link @yield('product')">
           <div class="sl-menu-item">
             <i class="menu-item-icon icon ion-ios-photos-outline tx-20"></i>
             <span class="menu-item-label">Product</span>
+          </div><!-- menu-item -->
+        </a><!-- sl-menu-link -->
+        <a href="{{ url('add/coupon') }}" class="sl-menu-link @yield('coupon')">
+          <div class="sl-menu-item">
+            <i class="menu-item-icon icon ion-ios-photos-outline tx-20"></i>
+            <span class="menu-item-label">Coupon</span>
+          </div><!-- menu-item -->
+        </a><!-- sl-menu-link -->
+        <a href="{{ url('/contact/list') }}" class="sl-menu-link @yield('contact')">
+          <div class="sl-menu-item">
+            <i class="menu-item-icon icon ion-ios-photos-outline tx-20"></i>
+            <span class="menu-item-label">Contacts</span>
           </div><!-- menu-item -->
         </a><!-- sl-menu-link -->
         <a href="{{ url('/') }}" class="sl-menu-link" target="_blank">

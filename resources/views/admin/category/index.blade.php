@@ -53,8 +53,8 @@
                               <tr>
                                 <td>Serial No.</td>
                                 <td>Category Name</td>
+                                <td>Parent Category</td>
                                 <td>Added By</td>
-                                <td>Last Updated At</td>
                                 <td>Created At</td>
                                 <td>Category Photo</td>
                                 <td>Action</td>
@@ -65,14 +65,15 @@
                                     <tr>
                                         <td class="text-center">{{ $loop->index + 1 }}</td>
                                         <td>{{ $category->category_name }}</td>
-                                        <td>{{ App\Models\User::find($category->user_id)->name }}</td>
                                         <td>
-                                            @if($category->updated_at)
-                                                {{ $category->updated_at->diffForHumans() }}
+                                            @if($category->category_id)
+                                                {{ $category->parent->category_name }}
                                             @else
-                                                <span class="bg-danger text-white">Not updated</span>
+                                                --
                                             @endif
                                         </td>
+                                        <td>{{ App\Models\User::find($category->user_id)->name }}</td>
+                                       
                                         <td>
                                             @if($category->created_at)
                                                 {{ $category->created_at->diffForHumans() }}
@@ -138,7 +139,7 @@
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <a href="{{ url('restore\category') }}/{{ $deleted_category->id }}" type="button" class="btn btn-success">Restore</a>
-                                                <a href="{{ url('harddelete\category') }}/{{ $deleted_category->id }}" type="button" class="btn btn-danger">DelHard</a>
+                                                <a href="{{ url('harddelete\category') }}/{{ $deleted_category->id }}" type="button" class="btn btn-danger">HardDel</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -175,15 +176,15 @@
                               @enderror
                             </div>
 
-                            {{-- <div class="mb-3">
+                            <div class="mb-3">
                                 <label class="form-label">Parent Category</label>
-                                <select class="form-control" wire:model="category_id">
+                                <select class="form-control" name="category_id">
                                     <option value="">None</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{$category->category_id}}">{{$category->category_name}}</option>
+                                    @foreach($pcategories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                     @endforeach
                                 </select>
-                              </div> --}}
+                            </div>
                             
                             <div class="mb-3">
                                 <label for="photo" class="form-label">Category Photo</label>

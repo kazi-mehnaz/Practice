@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Models\product;
+use App\Models\Product;
+use App\Models\Product_multiple_photo;
 use Carbon\Carbon;
 use Image;
 
@@ -24,6 +25,7 @@ class ProductController extends Controller
     }
 
     function addproductpost(Request $req){
+
         $product_id = Product::insertGetId([
             'product_name' => $req->product_name,
             'category_id' => $req->category_id,
@@ -43,6 +45,21 @@ class ProductController extends Controller
         Product::find($product_id)->update([
             'product_thumbnail_photo' => $new_name
         ]);
+
+        $start = 1;
+        foreach($req->file('product_multiple_photos') as $product_multiple_photo){
+            $uploaded_photo = $product_multiple_photo;
+            $new_name = $product_id."-".$start.".".$uploaded_photo->getClientOriginalExtension();
+            $new_upload_location = base_path('public/uploads/product_multiple_photos/'.$new_name);
+            Image::make($uploaded_photo)->resize(600,550)->save($new_upload_location, 40);
+            Product_multiple_photo::insert([
+                'product_id' => $product_id,
+                'photo_name' => $new_name,
+                'created_at' => Carbon::now()
+            ]);
+            $start++;
+        }
+
         return back();
 
     }

@@ -67,14 +67,13 @@
                                         <td class="text-center">{{ $loop->index + 1 }}</td>
                                         <td>{{ $product->product_name }}</td>
                                         <td>{{ $product->relationtocategorytable->category_name }}</td>
-                                        {{-- <td>{{ App\Models\Category::find($product->category_id)->category_name }}</td> --}}
                                         <td>{{ $product->product_price }}</td>
                                         <td>{{ $product->product_quantity }}</td>
                                         <td>
                                             <img src="{{ asset('uploads/product_photos') }}/{{ $product->product_thumbnail_photo }}" alt="not found" height="100">
                                         </td>
                                         <td>{{ $product->created_at }}</td>
-                                        {{-- <td>{{ App\Models\User::find($product->user_id)->name }}</td>
+                                        <!-- {{-- <td>{{ App\Models\User::find($product->user_id)->name }}</td>
                                         <td>
                                             @if($product->updated_at)
                                                 {{ $product->updated_at->diffForHumans() }}
@@ -88,8 +87,8 @@
                                             @else
                                                 <span class="bg-danger text-white">No time to show</span>
                                             @endif
-                                        </td> --}}
-                                        {{-- <td>
+                                        </td> --}} -->
+                                        <!-- {{-- <td>
                                             <img src="{{ asset('uploads/category_photos') }}/{{ $product->category_photo }}" width="100" alt="not found">
                                         </td> --}}
                                         {{-- <td>
@@ -97,7 +96,7 @@
                                                 <a href="{{ url('update\category') }}/{{ $product->id }}" type="button" class="btn btn-info">Update</a>
                                                 <a href="{{ url('delete\category') }}/{{ $product->id }}" type="button" class="btn btn-danger">Delete</a>
                                             </div>
-                                        </td> --}}
+                                        </td> --}} -->
                                     </tr>
                                     @empty
                                     <tr>
@@ -108,7 +107,7 @@
                         </table>
                     </div>
                 </div>
-                {{-- <div class="card mt-5">
+                <!-- {{-- <div class="card mt-5">
                     <div class="card-header">
                         <h3>List Category(Deleted)</h3>
                     </div>
@@ -159,7 +158,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div> --}}
+                </div> --}} -->
             </div>
             <div class="col-md-4">
                 <div class="card">
@@ -209,7 +208,7 @@
                                 <textarea class="form-control" name="product_long_description" rows="4"></textarea>
                               </div>
 
-                            <div class="mb-3">
+                              <div class="mb-3">
                                 <label for="photo" class="form-label">Product Thumbnail Photo</label>
                                 <input type="file" class="form-control" id="photo" name="product_thumbnail_photo">
                                 {{-- @error('category_photo')
@@ -217,6 +216,11 @@
                                         {{ $message }}
                                     </span>
                                 @enderror --}}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="photo" class="form-label">Product Multiple Photos</label>
+                                <input type="file" class="form-control" id="photo" name="product_multiple_photos[]" multiple>
                             </div>
                             <button type="submit" class="btn btn-success">Add Product</button>
                         </form>

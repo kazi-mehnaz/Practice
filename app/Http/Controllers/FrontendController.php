@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Product_multiple_photo;
 use App\Models\Category;
 // use App\Models\Contact;
 
@@ -11,31 +12,17 @@ class FrontendController extends Controller
 {
     function index(){
       return view('index', [
-        'categories' => Category::all(),
+        'categories' => Category::whereNull('category_id')->get(),
         'products' => Product::all()
       ]);
     }
-
-    // function createproduct(){
-    //   $products = Product::all();
-    //   return view('create', compact('products'));
-    // }
-
-    // function createproductpost(Request $req){
-    //   Product::insert([
-    //     'name' => $req->name,
-    //     'description' => $req->description,
-    //     'count' => $req->count,
-    //     'price' => $req->price
-    //   ]);
-    // return redirect('view')->with('success_message', 'Your product added successfully!');
-    // }
-
-    // function view_product(){
-    //   $products = Product::latest()->get();
-    //   $total_users = Product::count();
-    //   return view('view', compact('products', 'total_users'));
-    // }
+ 
+    function shop(){
+      return view('shop', [
+        'categories' => Category::whereNull('category_id')->get(),
+        'products' => Product::all()
+      ]);
+    }
 
     function contact(){
       return view('contact');
@@ -46,8 +33,11 @@ class FrontendController extends Controller
     }
 
     function productdetails($product_id){
+      $category_id = Product::find($product_id)->category_id;
       return view('productdetails', [
-        'product_info' => Product::find($product_id)
+        'product_info' => Product::find($product_id),
+        'related_products' => Product::where('category_id', $category_id)->where('id', '!=', $product_id)->limit(4)->get(),
+        'multiple_photos' => Product_multiple_photo::where('product_id', $product_id)->get()
       ]);
     }
 }

@@ -75,7 +75,7 @@
                         @foreach($categories as $category)
                             <div class="featured-wrap">
                                 <div class="featured-img">
-                                    <img src="{{ asset('frontend_assets') }}/images/featured/6.jpg" alt="">
+                                    <img src="{{ asset('uploads/category_photos') }}/{{ $category->category_photo }}" alt="">
                                     <div class="featured-content">
                                         <a href="shop.html">{{ $category->category_name }}</a>
                                     </div>
@@ -250,8 +250,7 @@
                     <div class="product-wrap">
                         <div class="product-img">
                             <span>Sale</span>
-                            <img src="{{ asset('frontend_assets') }}/images/product/15.jpg" alt="">
-                            {{-- <img src="{{ asset('uploads/product_photos') }}/{{ $product->product_thumbnail_photo }}" alt=""> --}}
+                            <img src="{{ asset('uploads/product_photos') }}/{{ $product->product_thumbnail_photo }}" alt=""> 
                             <div class="product-icon flex-style">
                                 <ul>
                                     <li><a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>

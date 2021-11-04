@@ -26,43 +26,23 @@
                     <div class="product-single-img">
                         <div class="product-active owl-carousel">
                             <div class="item">
-                                <img src="assets/images/product/product-details/1.jpg" alt="">
+                                <img src="{{ asset('uploads/product_photos') }}/{{ $product_info->product_thumbnail_photo }}" alt="">
                             </div>
+                            @foreach($multiple_photos as $multiple_photo)
                             <div class="item">
-                                <img src="assets/images/product/product-details/2.jpg" alt="">
+                                <img src="{{ asset('uploads/product_multiple_photos') }}/{{ $multiple_photo->photo_name }}" alt="">
                             </div>
-                            <div class="item">
-                                <img src="assets/images/product/product-details/3.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="assets/images/product/product-details/4.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="assets/images/product/product-details/5.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="assets/images/product/product-details/6.jpg" alt="">
-                            </div>
+                            @endforeach
                         </div>
                         <div class="product-thumbnil-active  owl-carousel">
                             <div class="item">
-                                <img src="assets/images/product/product-details/1.jpg" alt="">
+                                <img src="{{ asset('uploads/product_photos') }}/{{ $product_info->product_thumbnail_photo }}" alt="">
                             </div>
+                            @foreach($multiple_photos as $multiple_photo)
                             <div class="item">
-                                <img src="assets/images/product/product-details/2.jpg" alt="">
+                                <img src="{{ asset('uploads/product_multiple_photos') }}/{{ $multiple_photo->photo_name }}" alt="">
                             </div>
-                            <div class="item">
-                                <img src="assets/images/product/product-details/3.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="assets/images/product/product-details/4.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="assets/images/product/product-details/5.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="assets/images/product/product-details/6.jpg" alt="">
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -80,12 +60,18 @@
                                 <li>(05 Customar Review)</li>
                             </ul>
                         </div>
-                        <p>{{ $product_info->product_short_description }}</p>
+                        <p>{{ Str::limit($product_info->product_short_description, 50) }}</p>
                         <ul class="input-style">
-                            <li class="quantity cart-plus-minus">
-                                <input type="text" value="1" />
-                            </li>
-                            <li><a href="cart.html">Add to Cart</a></li>
+                            <form method="post" action="{{ url('add/to/cart') }}">
+                            @csrf
+                                <input type="hidden" value="{{$product_info->id}}" name="product_id">
+                                <li class="quantity cart-plus-minus">
+                                    <input type="text" value="1" name="quantity">
+                                </li>
+                                <li>
+                                    <button class="btn btn-danger" type="submit">Add to Cart</button>
+                                </li>
+                            </form>
                         </ul>
                         <ul class="cetagory">
                             <li>Categories:</li>
@@ -301,90 +287,35 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <div class="featured-product-wrap">
-                        <div class="featured-product-img">
-                            <img src="assets/images/product/1.jpg" alt="">
-                        </div>
-                        <div class="featured-product-content">
-                            <div class="row">
-                                <div class="col-7">
-                                    <h3><a href="shop.html">Nature Honey</a></h3>
-                                    <p>$219.56</p>
-                                </div>
-                                <div class="col-5 text-right">
-                                    <ul>
-                                        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        <li><a href="cart.html"><i class="fa fa-heart"></i></a></li>
-                                    </ul>
+                @forelse($related_products as $related_product)
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="featured-product-wrap">
+                            <div class="featured-product-img">
+                                <img src="{{ asset('uploads/product_photos') }}/{{ $related_product->product_thumbnail_photo }}" alt="">
+                            </div>
+                            <div class="featured-product-content">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h3><a href="{{ url('product/details') }}/{{ $related_product->id }}">{{ $related_product->product_name }}</a></h3>
+                                        <p>${{ $related_product->product_price }}</p>
+                                    </div>
+                                    <div class="col-5 text-right">
+                                        <ul>
+                                            <li><a href="cart.html"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a href="cart.html"><i class="fa fa-heart"></i></a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <div class="featured-product-wrap">
-                        <div class="featured-product-img">
-                            <img src="assets/images/product/2.jpg" alt="">
+                    @empty
+                    <div class="col-12">
+                        <div class="alert alert-danger">
+                            No Related Product To Show.
                         </div>
-                        <div class="featured-product-content">
-                            <div class="row">
-                                <div class="col-7">
-                                    <h3><a href="shop.html">Olive Oil</a></h3>
-                                    <p>$354.75</p>
-                                </div>
-                                <div class="col-5 text-right">
-                                    <ul>
-                                        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        <li><a href="cart.html"><i class="fa fa-heart"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <div class="featured-product-wrap">
-                        <div class="featured-product-img">
-                            <img src="assets/images/product/3.jpg" alt="">
-                        </div>
-                        <div class="featured-product-content">
-                            <div class="row">
-                                <div class="col-7">
-                                    <h3><a href="shop.html">Sunrise Oil</a></h3>
-                                    <p>$214.80</p>
-                                </div>
-                                <div class="col-5 text-right">
-                                    <ul>
-                                        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        <li><a href="cart.html"><i class="fa fa-heart"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <div class="featured-product-wrap">
-                        <div class="featured-product-img">
-                            <img src="assets/images/product/4.jpg" alt="">
-                        </div>
-                        <div class="featured-product-content">
-                            <div class="row">
-                                <div class="col-7">
-                                    <h3><a href="shop.html">Coconut Oil</a></h3>
-                                    <p>$241.00</p>
-                                </div>
-                                <div class="col-5 text-right">
-                                    <ul>
-                                        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        <li><a href="cart.html"><i class="fa fa-heart"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    </div>    
+                @endforelse
             </div>
         </div>
     </div>
